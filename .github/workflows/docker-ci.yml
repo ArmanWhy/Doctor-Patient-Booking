@@ -1,0 +1,32 @@
+name: Docker CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  docker_build_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests (optional - skip if none)
+        run: echo "No tests added yet"
+
+      - name: Build Docker image
+        run: docker build -t doctor-patient-api .
+
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 doctor-patient-api
